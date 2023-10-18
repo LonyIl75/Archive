@@ -1,0 +1,98 @@
+void afficher_description2(char** const descri, const size_t taille)
+{
+	size_t i = 0;
+	for (; i < taille-2; ++i)
+	{
+		printf("\"%s\":", descri[i]);
+		printf("\"%s\",", descri[++i]);
+	}
+
+	printf("\"%s\":", descri[i]);
+	printf("\"%s\"\n", descri[++i]);
+
+}
+void afficher_objetL2(const Table * my_class, const size_t num , const char fin_colonne, const char deb_colonne)
+{
+	size_t taille = my_class->nb_attribut;
+	char **  descri = my_class->description;
+	str_or_int * tab_strOrInt = my_class->tab;
+	size_t incr = 0;
+	if (deb_colonne != '\0')printf("%c", deb_colonne);
+	if (!(strcmp(descri[2 * incr + 1], "string"))) {
+		
+		printf("\"%s\"", tab_strOrInt[num*taille + incr].str);
+
+	}
+	else if (!(strcmp(descri[2 * incr + 1], "int"))) {
+		printf("\"%d\"", tab_strOrInt[num*taille + incr].nb);
+	}
+
+	else if (!(strcmp(descri[2 * incr + 1], "class"))) {
+		printf("\t%s\n", "Class");
+		//afficher_class(tab_strOrInt[incr / 2].class)
+	}
+	else {
+		printf("\t%s\n", "WTF");
+	}
+	
+	for (; incr < taille-2; incr++)
+	{
+		if(fin_colonne!='\0')printf("%c", fin_colonne);
+		if (deb_colonne != '\0')printf("%c", deb_colonne);
+		if (!(strcmp(descri[2 * incr + 1], "string"))) {
+			printf("\"%s\"",  tab_strOrInt[num*taille + incr].str);
+
+		}
+		else if (!(strcmp(descri[2 * incr + 1], "int"))) {
+			printf("\"%d\"", tab_strOrInt[num*taille + incr].nb);
+		}
+
+		else if (!(strcmp(descri[2 * incr + 1], "class"))) {
+			printf("\t%s\n", "Class");
+			//afficher_class(tab_strOrInt[incr / 2].class)
+		}
+		else {
+			printf("\t%s\n", "WTF");
+		}
+	}
+	
+	if (!(strcmp(descri[2 * incr + 1], "string"))) {
+		if (tab_strOrInt[num*taille + incr].str) {
+			if (fin_colonne != '\0')printf("%c", fin_colonne);
+			printf("\"%s\"", tab_strOrInt[num*taille + incr].str);
+		}
+		
+
+	}
+	else if (!(strcmp(descri[2 * incr + 1], "int"))) {
+		printf("\"%d\"",tab_strOrInt[num*taille + incr].nb);
+		if (fin_colonne != '\0')printf("%c", fin_colonne);
+	}
+
+	else if (!(strcmp(descri[2 * incr + 1], "class"))) {
+		printf("\t%s", "Class");
+		if (fin_colonne != '\0')printf("%c", fin_colonne);
+		//afficher_class(tab_strOrInt[incr / 2].class)
+	}
+	else {
+		printf("\t%s", "WTF");
+		if (fin_colonne != '\0')printf("%c", fin_colonne);
+	}
+
+}
+void afficher_class2(const Table* my_class ,const char fin_table, const char fin_ligne, const char fin_colonne, const char deb_ligne, const char deb_colonne, const char deb_table,const char deb_descri , const char fin_descri)
+{
+	if (deb_table != '\0')printf("%c", deb_table);
+	printf(" \"%s\":%d\n ", (my_class->name ? my_class->name : "NULL"),my_class->nb_attribut);
+	if (fin_descri!= '\0')printf("%c",fin_descri);
+	if (deb_descri != '\0')printf("%c", deb_descri);
+	afficher_description2(my_class->description, my_class->nb_attribut * 2);
+	if (fin_descri != '\0')printf("%c", fin_descri);
+	for (size_t i = 0; i < my_class->nb_element; i++)
+	{
+		if (deb_ligne != '\0')printf("%c", deb_ligne);
+		afficher_objetL2(my_class, i, fin_colonne, deb_colonne);
+		if (fin_ligne != '\0')printf("%c",fin_ligne);
+	}
+	if (fin_table != '\0')printf("%c", fin_table);
+
